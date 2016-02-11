@@ -1,5 +1,5 @@
 Given(/^there is a time duration \{([^\}]+)\} to \{([^\}]+)\} on the stack$/) do |start_at_str, end_at_str|
-  td = TimePieces::TimeDuration.parse_from_time_string(start_at_str, end_at_str)
+  td = TimePieces::SimpleDuration.parse_from_time_string(start_at_str, end_at_str)
   @time_duration_stack ||= []
   @time_duration_stack << td
 end

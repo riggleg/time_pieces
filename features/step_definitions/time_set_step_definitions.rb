@@ -6,7 +6,7 @@ end
 Then(/^the \{(\d+)\} time duration in \{(\d+)\} time set stack should be \{([^\}]*)\} to \{([^\}]*)\}$/) do |td_index, ts_index, start_time_str, end_time_str|
   ts = @time_set_stack[ts_index.to_i]
   td = ts.time_durations[td_index.to_i]
-  inp_td = TimePieces::TimeDuration.parse_from_time_string(start_time_str, end_time_str)
+  inp_td = TimePieces::SimpleDuration.parse_from_time_string(start_time_str, end_time_str)
   assert_equal inp_td.start_at_seconds, td.start_at_seconds
   assert_equal inp_td.end_at_seconds, td.end_at_seconds
 end
@@ -14,7 +14,7 @@ end
 Then(/^the \{(\d+)\} sorted time duration in \{(\d+)\} time set stack should be \{([^\}]*)\} to \{([^\}]*)\}$/) do |td_index, ts_index, start_time_str, end_time_str|
   ts = @time_set_stack[ts_index.to_i]
   td = ts.time_durations.sort[td_index.to_i]
-  inp_td = TimePieces::TimeDuration.parse_from_time_string(start_time_str, end_time_str)
+  inp_td = TimePieces::SimpleDuration.parse_from_time_string(start_time_str, end_time_str)
   assert_equal inp_td.start_at_seconds, td.start_at_seconds
   assert_equal inp_td.end_at_seconds, td.end_at_seconds
 end

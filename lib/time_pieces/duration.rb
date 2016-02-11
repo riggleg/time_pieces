@@ -1,25 +1,25 @@
 module TimePieces
-  class TimeDuration
-    #Time is measured as seconds since midnight
+  module Duration
     attr_accessor :start_at_seconds, :duration_seconds
-    def start_at=(s_at)
-      self.start_at_seconds = s_at.seconds_since_midnight
-    end
-    def initialize(start_at_seconds, duration_seconds)
-      self.start_at_seconds = start_at_seconds
-      self.duration_seconds = duration_seconds
-    end
-    def self.parse_from_time_string(start_at_str, end_at_str)
-      start_at_seconds = Time.parse(start_at_str).seconds_since_midnight
-      end_at_seconds = Time.parse(end_at_str).seconds_since_midnight
-      return self.new(start_at_seconds, end_at_seconds - start_at_seconds)
-    end
-    def self.new_using_seconds_and_end_at(start_at_seconds, end_at_seconds)
-      return self.new(start_at_seconds, end_at_seconds - start_at_seconds)
-    end
     def end_at_seconds
       return start_at_seconds + duration_seconds
     end
+    def end_at_seconds=(new_end_at_seconds)
+      self.duration_seconds = new_end_at_seconds - start_at_seconds
+    end
+    def update_start_seconds_and_end_seconds(new_start_seconds, new_end_seconds)
+      self.start_at_seconds = new_start_seconds
+      self.end_at_seconds = new_end_seconds
+      return self
+    end
+    def left_duration_copy
+      duration_copy
+    end
+    def right_duration_copy
+      duration_copy
+    end
+
+
     def overlaps_start?(other_td)
       return true if (start_at_seconds >= other_td.start_at_seconds) && (start_at_seconds < other_td.end_at_seconds)
       return false
@@ -57,24 +57,18 @@ module TimePieces
     def <=>(other)
       start_at_seconds <=> other.start_at_seconds
     end
-    def inspect
-      hours_start = start_at_seconds / 60 / 60
-      hours_end = end_at_seconds / 60 / 60
-      duration = duration_seconds / 60 / 60
-      return "TD: #{hours_start} - #{hours_end} time in seconds: #{duration_seconds}"
-    end
     def +(other_td)
       ts_ret = TimeSet.new
       if overlaps?(other_td)
         if overlaps_start?(other_td) && !overlaps_outside?(other_td)
-          new_td = TimeDuration.new_using_seconds_and_end_at(other_td.start_at_seconds, end_at_seconds)
-          ts_ret << new_td
+          update_start_seconds_and_end_seconds(other_td.start_at_seconds, end_at_seconds)
+          ts_ret << self
           return ts_ret
         end
         if overlaps_end?(other_td) && !overlaps_outside?(other_td)
           
-          new_td = TimeDuration.new_using_seconds_and_end_at(start_at_seconds, other_td.end_at_seconds)
-          ts_ret << new_td
+          update_start_seconds_and_end_seconds(start_at_seconds, other_td.end_at_seconds)
+          ts_ret << self
           return ts_ret
         end
         if overlaps_inside?(other_td)
@@ -88,13 +82,13 @@ module TimePieces
       end
       if touches?(other_td)
         if touches_at_end?(other_td) && other_td.end_at_seconds > end_at_seconds
-          new_td = TimeDuration.new(start_at_seconds, other_td.end_at_seconds - start_at_seconds)
-          ts_ret << new_td
+          update_start_seconds_and_end_seconds(start_at_seconds, other_td.end_at_seconds)
+          ts_ret << self
           return ts_ret
         end
         if touches_at_start?(other_td) && other_td.start_at_seconds < start_at_seconds
-          new_td = TimeDuration.new(other_td.start_at_seconds, end_at_seconds - other_td.start_at_seconds)
-          ts_ret << new_td
+          update_start_seconds_and_end_seconds(other_td.start_at_seconds, end_at_seconds)
+          ts_ret << self
           return ts_ret
         end
         return false
@@ -111,19 +105,27 @@ module TimePieces
       end
       if overlaps?(other_td)
         if overlaps_start?(other_td)
-          ts_ret << TimeDuration.new_using_seconds_and_end_at(other_td.end_at_seconds, end_at_seconds)
+          update_start_seconds_and_end_seconds(other_td.end_at_seconds, end_at_seconds)
+          ts_ret << self
+          return ts_ret
         end
         if overlaps_end?(other_td)
-          ts_ret << TimeDuration.new_using_seconds_and_end_at(start_at_seconds, other_td.start_at_seconds)
+          puts inspect
+          update_start_seconds_and_end_seconds(start_at_seconds, other_td.start_at_seconds)
+          puts "RUNNING OVERLAPPING END"
+          puts inspect
+          ts_ret << self
+          return ts_ret
         end
         if overlaps_inside?(other_td)
-          left_of_break = TimeDuration.new_using_seconds_and_end_at(start_at_seconds, other_td.start_at_seconds)
-          right_of_break = TimeDuration.new_using_seconds_and_end_at(other_td.end_at_seconds, end_at_seconds)
+          left_of_break = left_duration_copy.update_start_seconds_and_end_seconds(start_at_seconds, other_td.start_at_seconds)
+          right_of_break = right_duration_copy.update_start_seconds_and_end_seconds(other_td.end_at_seconds, end_at_seconds)
           ts_ret << left_of_break
           ts_ret << right_of_break
         end
         return ts_ret
       end
     end
+
   end
 end
