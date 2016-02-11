@@ -1,5 +1,5 @@
 Given(/^there is a time duration \{([^\}]+)\} to \{([^\}]+)\} on the stack$/) do |start_at_str, end_at_str|
-  td = TimeDuration.parse_from_time_string(start_at_str, end_at_str)
+  td = TimePieces::TimeDuration.parse_from_time_string(start_at_str, end_at_str)
   @time_duration_stack ||= []
   @time_duration_stack << td
 end
@@ -73,3 +73,16 @@ When(/^the \[(\d+)\] time duration is subtracted from \[(\d+)\] time duration$/)
   @time_set_stack << (td_subtrahend - td_minuend)
   
 end
+
+When(/^the last 2 time sets on the stack are added together and put on the stack$/) do
+  ts1 = @time_set_stack[-2]
+  ts2 = @time_set_stack[-1]
+  @time_set_stack << (ts1 + ts2)
+  
+end
+
+Given(/^I clear the time duration stack$/) do
+  @time_duration_stack = []
+end
+
+

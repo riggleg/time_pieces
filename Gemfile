@@ -1,10 +1,11 @@
 source 'http://rubygems.org'
-gem "activesupport"
-
-group :test do
-  gem "rake"
-  gem "cucumber"
-end
+gemspec
+#group :test do
+#      gem "activesupport"
+#
+#  gem "rake"
+#  gem "cucumber"
+#end
 
 
 
