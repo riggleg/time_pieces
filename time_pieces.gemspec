@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  spec.require_paths = ["lib"]
+  spec.require_path = "lib"
   spec.homepage    = "http://github.com/riggleg/time_pieces"
   spec.summary     = "Time based operations."
   spec.description = "time_pieces is a library to make it easy to add/subtract time from a schedule"

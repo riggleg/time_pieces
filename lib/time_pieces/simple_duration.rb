@@ -23,8 +23,8 @@ module TimePieces
       duration = duration_seconds / 60 / 60
       return "TD: #{hours_start} - #{hours_end} time in seconds: #{duration_seconds}"
     end
-    def bookable_copy
-      return SimpleDuration.new(1,10)
+    def duration_copy
+      return TimePieces::SimpleDuration.new(1,10)
     end
   end
 end
