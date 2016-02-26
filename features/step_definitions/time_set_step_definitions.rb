@@ -25,6 +25,9 @@ When(/^I examine the \{(\d+)\} time set in the stack$/) do |ts_index|
     hours_start = td.start_at_seconds / 60 / 60
     hours_end = td.end_at_seconds / 60 / 60
     duration = td.duration_seconds / 60 / 60
+    puts "Start #{hours_start}"
+    puts "End #{hours_end}"
+    puts "Duration #{duration}"
   end
 end
 
@@ -42,3 +45,4 @@ When(/^I subtract time set\{(\d+)\} from time set\{(\d+)\}$/) do |minuend_index,
   @time_set_stack ||= []
   @time_set_stack << (@time_set_stack[subtrahend_index.to_i] - @time_set_stack[minuend_index.to_i])
 end
+

@@ -90,3 +90,10 @@ Scenario: When I subtract a non conflicting td it will return original
   When the [1] time duration is subtracted from [0] time duration
   Then the {0} sorted time duration in {0} time set stack should be {1:00pm} to {2:00pm}
 
+Scenario: Subtracting a duration with one that surrounds it should result in no time durations
+  Given there is a time duration {9:00am} to {2:00pm} on the stack
+  And there is a time duration {12:01am} to {11:59pm} on the stack
+  When the [1] time duration is subtracted from [0] time duration
+  And I examine the {0} time set in the stack
+  Then the {0} time set in the stack should have {0} time durations
+

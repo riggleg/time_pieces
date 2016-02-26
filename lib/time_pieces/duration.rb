@@ -32,6 +32,9 @@ module TimePieces
       return true if (other_td.end_at_seconds > start_at_seconds) && (other_td.end_at_seconds <= end_at_seconds) && (other_td.start_at_seconds >= start_at_seconds) && (other_td.start_at_seconds < end_at_seconds)
       return false
     end
+    def inside_of?(other_td)
+      return true if (other_td.start_at_seconds < start_at_seconds) && (other_td.end_at_seconds > end_at_seconds)
+    end
     def overlaps_outside?(other_td)
       return other_td.overlaps_inside?(self)
     end
@@ -99,11 +102,13 @@ module TimePieces
     end
     def -(other_td)
       ts_ret = TimeSet.new
+      return ts_ret if inside_of?(other_td)
       unless overlaps?(other_td)
         ts_ret << self
         return ts_ret
       end
       if overlaps?(other_td)
+
         if overlaps_start?(other_td)
           update_start_seconds_and_end_seconds(other_td.end_at_seconds, end_at_seconds)
           ts_ret << self
