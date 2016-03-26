@@ -1,6 +1,16 @@
 module TimePieces
+  module DurationClassMethods
+    def parse(str)
+      times = str.split(" - ")
+      dur = self.new(Chronic.parse(times[0]).seconds_since_midnight, Chronic.parse(times[1]).seconds_since_midnight -  Chronic.parse(times[0]).seconds_since_midnight)
+      return dur
+    end
+  end
   module Duration
     attr_accessor :start_at_seconds, :duration_seconds
+    def self.included(base)
+      base.extend(DurationClassMethods)
+    end
     def end_at_seconds
       return start_at_seconds + duration_seconds
     end

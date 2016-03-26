@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    time_pieces (1.0.1)
+    time_pieces (1.0.3)
       bundler
 
 GEM
@@ -14,6 +14,7 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     builder (3.2.2)
+    chronic (0.10.2)
     cucumber (2.3.2)
       builder (>= 2.1.2)
       cucumber-core (~> 1.4.0)
@@ -42,9 +43,7 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport (~> 4.2)
+  chronic (~> 0.10.2)
   cucumber (~> 2.3.2)
   rake (~> 10.5)
   time_pieces!
-
-BUNDLED WITH
-   1.10.6

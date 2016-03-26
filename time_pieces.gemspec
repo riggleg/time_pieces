@@ -38,4 +38,6 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'rake',     '~> 10.5'
   spec.add_development_dependency 'cucumber', '~> 2.3.2'
+  spec.add_development_dependency 'chronic', '~> 0.10.2'
+
 end
