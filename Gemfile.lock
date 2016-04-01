@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    time_pieces (1.0.3)
+    time_pieces (1.0.4)
       bundler
 
 GEM

@@ -7,4 +7,5 @@ require 'time_pieces/duration'
 
 require 'time_pieces/simple_duration'
 require 'time_pieces/time_set'
+require 'time_pieces/traffic_cop'
 require 'chronic'

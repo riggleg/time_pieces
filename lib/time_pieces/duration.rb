@@ -7,7 +7,7 @@ module TimePieces
     end
   end
   module Duration
-    attr_accessor :start_at_seconds, :duration_seconds
+    attr_accessor :start_at_seconds, :duration_seconds, :lane_number, :lane_count
     def self.included(base)
       base.extend(DurationClassMethods)
     end

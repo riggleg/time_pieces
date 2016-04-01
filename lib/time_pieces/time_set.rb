@@ -4,6 +4,27 @@ module TimePieces
     def initialize
       @time_durations = []
     end
+    def time_durations_in_lanes
+      
+    end
+    def clip(start_at_seconds, end_at_seconds)
+      new_tds = []
+      time_durations.each do |td|
+        if td.start_at_seconds < start_at_seconds
+          td.start_at_seconds = start_at_seconds
+        end
+        if td.start_at_seconds + td.duration_seconds > end_at_seconds
+          td.duration_seconds = end_at_seconds - start_at_seconds
+        end
+        new_tds << td
+      end
+      return new_tds
+      
+    end
+    def deep_dup
+     return Marshal.load(Marshal.dump(self)) 
+    end
+
     #Adds a new time duration.  Removes invalid time durations.
     def <<(new_td)
       if new_td.duration_seconds == 0
