@@ -28,7 +28,12 @@ module TimePieces
     def right_duration_copy
       duration_copy
     end
-
+    def clip!(start_at_seconds, end_at_seconds)
+      self.start_at_seconds = start_at_seconds if self.start_at_seconds < start_at_seconds 
+        if self.start_at_seconds + self.duration_seconds > end_at_seconds
+          self.duration_seconds = end_at_seconds - start_at_seconds
+        end
+    end
 
     def overlaps_start?(other_td)
       return true if (start_at_seconds >= other_td.start_at_seconds) && (start_at_seconds < other_td.end_at_seconds)
